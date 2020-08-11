@@ -10,9 +10,12 @@ import 'theme.dart';
 
 /// Represents number lists and bullet lists in a Zefyr editor.
 class ZefyrList extends StatelessWidget {
-  const ZefyrList({Key key, @required this.node}) : super(key: key);
+  const ZefyrList({Key key, @required this.node, this.onLinkTap})
+      : super(key: key);
 
   final BlockNode node;
+
+  final Function(String) onLinkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +42,23 @@ class ZefyrList extends StatelessWidget {
 
   Widget _buildItem(Node node, int index) {
     LineNode line = node;
-    return ZefyrListItem(index: index, node: line);
+    return ZefyrListItem(
+      index: index,
+      node: line,
+      onLinkTap: onLinkTap,
+    );
   }
 }
 
 /// An item in a [ZefyrList].
 class ZefyrListItem extends StatelessWidget {
-  ZefyrListItem({Key key, this.index, this.node}) : super(key: key);
+  ZefyrListItem({Key key, this.index, this.node, this.onLinkTap})
+      : super(key: key);
 
   final int index;
   final LineNode node;
+
+  final Function(String) onLinkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +86,7 @@ class ZefyrListItem extends StatelessWidget {
         node: node,
         style: textStyle,
         padding: blockTheme.linePadding,
+        onLinkTap: onLinkTap,
       );
       padding = blockTheme.linePadding;
     }

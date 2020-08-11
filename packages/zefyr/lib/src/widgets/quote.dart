@@ -9,9 +9,12 @@ import 'theme.dart';
 
 /// Represents a quote block in a Zefyr editor.
 class ZefyrQuote extends StatelessWidget {
-  const ZefyrQuote({Key key, @required this.node}) : super(key: key);
+  const ZefyrQuote({Key key, @required this.node, this.onLinkTap})
+      : super(key: key);
 
   final BlockNode node;
+
+  final Function(String) onLinkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +39,17 @@ class ZefyrQuote extends StatelessWidget {
 
     Widget content;
     if (line.style.contains(NotusAttribute.heading)) {
-      content = ZefyrHeading(node: line, blockStyle: blockStyle);
+      content = ZefyrHeading(
+        node: line,
+        blockStyle: blockStyle,
+        onLinkTap: onLinkTap,
+      );
     } else {
-      content = ZefyrParagraph(node: line, blockStyle: blockStyle);
+      content = ZefyrParagraph(
+        node: line,
+        blockStyle: blockStyle,
+        onLinkTap: onLinkTap,
+      );
     }
 
     final row = Row(children: <Widget>[Expanded(child: content)]);

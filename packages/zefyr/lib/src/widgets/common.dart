@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -16,9 +17,12 @@ import 'theme.dart';
 
 /// Represents single line of rich text document in Zefyr editor.
 class ZefyrLine extends StatefulWidget {
-  const ZefyrLine({Key key, @required this.node, this.style, this.padding})
+  const ZefyrLine(
+      {Key key, @required this.node, this.style, this.padding, this.onLinkTap})
       : assert(node != null),
         super(key: key);
+
+  final Function(String) onLinkTap;
 
   /// Line in the document represented by this widget.
   final LineNode node;
@@ -130,9 +134,15 @@ class _ZefyrLineState extends State<ZefyrLine> {
   TextSpan _segmentToTextSpan(Node node, ZefyrThemeData theme) {
     final TextNode segment = node;
     final attrs = segment.style;
+    var recognizer;
+    if (attrs.contains(NotusAttribute.link) && widget.onLinkTap != null) {
+      recognizer = TapGestureRecognizer()
+        ..onTap = () => widget.onLinkTap(attrs.get(NotusAttribute.link).value);
+    }
 
     return TextSpan(
       text: segment.value,
+      recognizer: recognizer,
       style: _getTextStyle(attrs, theme),
     );
   }

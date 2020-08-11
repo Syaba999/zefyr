@@ -9,11 +9,13 @@ import 'theme.dart';
 
 /// Represents regular paragraph line in a Zefyr editor.
 class ZefyrParagraph extends StatelessWidget {
-  ZefyrParagraph({Key key, @required this.node, this.blockStyle})
+  ZefyrParagraph(
+      {Key key, @required this.node, this.blockStyle, this.onLinkTap})
       : super(key: key);
 
   final LineNode node;
   final TextStyle blockStyle;
+  final Function(String) onLinkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class ZefyrParagraph extends StatelessWidget {
     return ZefyrLine(
       node: node,
       style: style,
+      onLinkTap: onLinkTap,
       padding: theme.defaultLineTheme.padding,
     );
   }
@@ -32,12 +35,13 @@ class ZefyrParagraph extends StatelessWidget {
 
 /// Represents heading-styled line in [ZefyrEditor].
 class ZefyrHeading extends StatelessWidget {
-  ZefyrHeading({Key key, @required this.node, this.blockStyle})
+  ZefyrHeading({Key key, @required this.node, this.blockStyle, this.onLinkTap})
       : assert(node.style.contains(NotusAttribute.heading)),
         super(key: key);
 
   final LineNode node;
   final TextStyle blockStyle;
+  final Function(String) onLinkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +54,7 @@ class ZefyrHeading extends StatelessWidget {
       node: node,
       style: style,
       padding: theme.padding,
+      onLinkTap: onLinkTap,
     );
   }
 

@@ -19,8 +19,10 @@ import 'theme.dart';
 class ZefyrView extends StatefulWidget {
   final NotusDocument document;
   final ZefyrImageDelegate imageDelegate;
+  final Function(String) onLinkTap;
 
-  const ZefyrView({Key key, @required this.document, this.imageDelegate})
+  const ZefyrView(
+      {Key key, @required this.document, this.imageDelegate, this.onLinkTap})
       : super(key: key);
 
   @override
@@ -86,23 +88,41 @@ class ZefyrViewState extends State<ZefyrView> {
   Widget _defaultChildBuilder(BuildContext context, Node node) {
     if (node is LineNode) {
       if (node.hasEmbed) {
-        return ZefyrLine(node: node);
+        return ZefyrLine(
+          node: node,
+          onLinkTap: widget.onLinkTap,
+        );
       } else if (node.style.contains(NotusAttribute.heading)) {
-        return ZefyrHeading(node: node);
+        return ZefyrHeading(
+          node: node,
+          onLinkTap: widget.onLinkTap,
+        );
       }
-      return ZefyrParagraph(node: node);
+      return ZefyrParagraph(node: node, onLinkTap: widget.onLinkTap);
     }
 
     final BlockNode block = node;
     final blockStyle = block.style.get(NotusAttribute.block);
     if (blockStyle == NotusAttribute.block.code) {
-      return ZefyrCode(node: block);
+      return ZefyrCode(
+        node: block,
+        onLinkTap: widget.onLinkTap,
+      );
     } else if (blockStyle == NotusAttribute.block.bulletList) {
-      return ZefyrList(node: block);
+      return ZefyrList(
+        node: block,
+        onLinkTap: widget.onLinkTap,
+      );
     } else if (blockStyle == NotusAttribute.block.numberList) {
-      return ZefyrList(node: block);
+      return ZefyrList(
+        node: block,
+        onLinkTap: widget.onLinkTap,
+      );
     } else if (blockStyle == NotusAttribute.block.quote) {
-      return ZefyrQuote(node: block);
+      return ZefyrQuote(
+        node: block,
+        onLinkTap: widget.onLinkTap,
+      );
     }
 
     throw UnimplementedError('Block format $blockStyle.');
