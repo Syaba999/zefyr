@@ -9,10 +9,13 @@ import 'theme.dart';
 
 /// Represents a code snippet in Zefyr editor.
 class ZefyrCode extends StatelessWidget {
-  const ZefyrCode({Key key, @required this.node}) : super(key: key);
+  const ZefyrCode({Key key, @required this.node, this.onLinkTap})
+      : super(key: key);
 
   /// Document node represented by this widget.
   final BlockNode node;
+
+  final Function(String) onLinkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,10 @@ class ZefyrCode extends StatelessWidget {
 
   Widget _buildLine(Node node, TextStyle style) {
     LineNode line = node;
-    return ZefyrLine(node: line, style: style);
+    return ZefyrLine(
+      node: line,
+      style: style,
+      onLinkTap: onLinkTap,
+    );
   }
 }
