@@ -4,7 +4,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:notus/notus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'scope.dart';
 import 'theme.dart';
@@ -296,7 +295,9 @@ class _ImageButtonState extends State<ImageButton> {
 }
 
 class LinkButton extends StatefulWidget {
-  const LinkButton({Key key}) : super(key: key);
+  const LinkButton({Key key, this.openLink}) : super(key: key);
+
+  final Function(String) openLink;
 
   @override
   _LinkButtonState createState() => _LinkButtonState();
@@ -413,10 +414,8 @@ class _LinkButtonState extends State<LinkButton> {
     final editor = ZefyrToolbar.of(context).editor;
     var link = getLink();
     assert(link != null);
-    if (await canLaunch(link)) {
-      editor.hideKeyboard();
-      await launch(link, forceWebView: true);
-    }
+    editor.hideKeyboard();
+    if (widget.openLink != null) widget.openLink(link);
   }
 
   void _handleInputChange() {
