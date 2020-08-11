@@ -104,10 +104,12 @@ class ZefyrToolbar extends StatefulWidget implements PreferredSizeWidget {
     @required this.editor,
     this.autoHide = true,
     this.delegate,
+    this.openLink,
   }) : super(key: key);
 
   final ZefyrToolbarDelegate delegate;
   final ZefyrScope editor;
+  final Function(String) openLink;
 
   /// Whether to automatically hide this toolbar when editor loses focus.
   final bool autoHide;
@@ -252,7 +254,9 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
     final buttons = <Widget>[
       buildButton(context, ZefyrToolbarAction.bold),
       buildButton(context, ZefyrToolbarAction.italic),
-      LinkButton(),
+      LinkButton(
+        openLink: widget.openLink,
+      ),
       HeadingButton(),
       buildButton(context, ZefyrToolbarAction.bulletList),
       buildButton(context, ZefyrToolbarAction.numberList),
