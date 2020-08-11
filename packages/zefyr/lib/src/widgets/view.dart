@@ -19,8 +19,10 @@ import 'theme.dart';
 class ZefyrView extends StatefulWidget {
   final NotusDocument document;
   final ZefyrImageDelegate imageDelegate;
+  final Function(String url) onLinkTap;
 
-  const ZefyrView({Key key, @required this.document, this.imageDelegate})
+  const ZefyrView(
+      {Key key, @required this.document, this.imageDelegate, this.onLinkTap})
       : super(key: key);
 
   @override
@@ -85,7 +87,12 @@ class ZefyrViewState extends State<ZefyrView> {
 
   Widget _defaultChildBuilder(BuildContext context, Node node) {
     if (node is LineNode) {
-      if (node.hasEmbed) {
+      if (node.style.contains(NotusAttribute.link)) {
+        print(node.toString());
+        return GestureDetector(
+            onTap: () => widget.onLinkTap("dsad"),
+            child: ZefyrLine(node: node));
+      } else if (node.hasEmbed) {
         return ZefyrLine(node: node);
       } else if (node.style.contains(NotusAttribute.heading)) {
         return ZefyrHeading(node: node);
