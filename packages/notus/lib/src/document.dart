@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:quill_delta/quill_delta.dart';
 
+import 'convert/html.dart';
 import 'document/attributes.dart';
 import 'document/block.dart';
 import 'document/leaf.dart';
@@ -57,6 +58,13 @@ class NotusDocument {
     _loadDocument(_delta);
   }
 
+  NotusDocument.fromHtml(String html)
+      : assert(html != null),
+        _heuristics = NotusHeuristics.fallback,
+        _delta = NotusHTMLCodec().decode(html) {
+    _loadDocument(_delta);
+  }
+
   final NotusHeuristics _heuristics;
 
   /// The root node of this document tree.
@@ -81,6 +89,10 @@ class NotusDocument {
 
   dynamic toJson() {
     return _delta.toJson();
+  }
+
+  String toHtml() {
+    return NotusHTMLCodec().encode(_delta);
   }
 
   /// Returns `true` if this document and associated stream of [changes]
