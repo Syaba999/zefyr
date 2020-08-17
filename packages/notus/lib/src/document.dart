@@ -91,8 +91,8 @@ class NotusDocument {
     return _delta.toJson();
   }
 
-  String toHtml() {
-    return NotusHTMLCodec().encode(_delta);
+  String toHtml({bool useStrong = false, bool useEm = false}) {
+    return NotusHTMLCodec(useStrong: useStrong, useEm: useEm).encode(_delta);
   }
 
   /// Returns `true` if this document and associated stream of [changes]
